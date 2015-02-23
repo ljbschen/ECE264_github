@@ -1,0 +1,114 @@
+==14115== Memcheck, a memory error detector
+==14115== Copyright (C) 2002-2012, and GNU GPL'd, by Julian Seward et al.
+==14115== Using Valgrind-3.8.1 and LibVEX; rerun with -h for copyright info
+==14115== Command: ./answer06
+==14115== Parent PID: 37193
+==14115== 
+--14115-- 
+--14115-- Valgrind options:
+--14115--    --tool=memcheck
+--14115--    --leak-check=full
+--14115--    --verbose
+--14115--    --log-file=memcheck.log
+--14115-- Contents of /proc/version:
+--14115--   Linux version 2.6.32-504.8.1.el6.x86_64 (mockbuild@x86-002.build.bos.redhat.com) (gcc version 4.4.7 20120313 (Red Hat 4.4.7-9) (GCC) ) #1 SMP Fri Dec 19 12:09:25 EST 2014
+--14115-- Arch and hwcaps: AMD64, amd64-sse3-cx16-avx
+--14115-- Page sizes: currently 4096, max supported 4096
+--14115-- Valgrind library directory: /usr/lib64/valgrind
+--14115-- Reading syms from /home/min/a/chen1059/ECE264/solutions/PA06/answer06
+--14115-- Reading syms from /usr/lib64/valgrind/memcheck-amd64-linux
+--14115--    object doesn't have a dynamic symbol table
+--14115-- Reading syms from /lib64/ld-2.12.so
+--14115--   Considering /usr/lib/debug/.build-id/5b/eb2450b75e84ff317c65f22af8b8112c25df63.debug ..
+--14115--   .. build-id is valid
+--14115-- Scheduler: using generic scheduler lock implementation.
+--14115-- Reading suppressions file: /usr/lib64/valgrind/default.supp
+==14115== embedded gdbserver: reading from /tmp/vgdb-pipe-from-vgdb-to-14115-by-chen1059-on-ecegrid-thin4.ecn.purdue.edu
+==14115== embedded gdbserver: writing to   /tmp/vgdb-pipe-to-vgdb-from-14115-by-chen1059-on-ecegrid-thin4.ecn.purdue.edu
+==14115== embedded gdbserver: shared mem   /tmp/vgdb-pipe-shared-mem-vgdb-14115-by-chen1059-on-ecegrid-thin4.ecn.purdue.edu
+==14115== 
+==14115== TO CONTROL THIS PROCESS USING vgdb (which you probably
+==14115== don't want to do, unless you know exactly what you're doing,
+==14115== or are doing some strange experiment):
+==14115==   /usr/lib64/valgrind/../../bin/vgdb --pid=14115 ...command...
+==14115== 
+==14115== TO DEBUG THIS PROCESS USING GDB: start GDB like this
+==14115==   /path/to/gdb ./answer06
+==14115== and then give GDB the following command
+==14115==   target remote | /usr/lib64/valgrind/../../bin/vgdb --pid=14115
+==14115== --pid is optional if only one valgrind process is running
+==14115== 
+--14115-- REDIR: 0x34660176d0 (strlen) redirected to 0x38049551 (vgPlain_amd64_linux_REDIR_FOR_strlen)
+--14115-- Reading syms from /usr/lib64/valgrind/vgpreload_core-amd64-linux.so
+--14115-- Reading syms from /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so
+--14115-- REDIR: 0x34660174e0 (index) redirected to 0x4a07c30 (index)
+--14115-- REDIR: 0x3466017560 (strcmp) redirected to 0x4a08570 (strcmp)
+--14115-- Reading syms from /lib64/libc-2.12.so
+--14115--   Considering /usr/lib/debug/.build-id/22/aa38cca59a5df6cf07b8fc1778e2ee0384508e.debug ..
+--14115--   .. build-id is valid
+--14115-- REDIR: 0x3466484cd0 (strcasecmp) redirected to 0x480155c (_vgnU_ifunc_wrapper)
+--14115-- REDIR: 0x3466486f90 (strncasecmp) redirected to 0x480155c (_vgnU_ifunc_wrapper)
+--14115-- REDIR: 0x3466482c40 (__GI_strrchr) redirected to 0x4a07ab0 (__GI_strrchr)
+--14115-- REDIR: 0x346647a640 (malloc) redirected to 0x4a069ac (malloc)
+--14115-- REDIR: 0x3466481160 (__GI_strlen) redirected to 0x4a07fb0 (__GI_strlen)
+==14115== Conditional jump or move depends on uninitialised value(s)
+==14115==    at 0x400A7E: print_directions (answer06.c:75)
+==14115==    by 0x400B77: main (mytest.c:29)
+==14115== 
+==14115== Invalid read of size 1
+==14115==    at 0x400A70: print_directions (answer06.c:75)
+==14115==    by 0x400B77: main (mytest.c:29)
+==14115==  Address 0x4c3c0da is 0 bytes after a block of size 10 alloc'd
+==14115==    at 0x4A06A2E: malloc (vg_replace_malloc.c:270)
+==14115==    by 0x400AE8: main (mytest.c:22)
+==14115== 
+==14115== 
+==14115== Process terminating with default action of signal 11 (SIGSEGV)
+==14115==  Access not within mapped region at address 0x503C000
+==14115==    at 0x400A70: print_directions (answer06.c:75)
+==14115==    by 0x400B77: main (mytest.c:29)
+==14115==  If you believe this happened as a result of a stack
+==14115==  overflow in your program's main thread (unlikely but
+==14115==  possible), you can try to increase the size of the
+==14115==  main thread stack using the --main-stacksize= flag.
+==14115==  The main thread stack size used in this run was 10485760.
+--14115-- REDIR: 0x346647b520 (free) redirected to 0x4a063a9 (free)
+==14115== 
+==14115== HEAP SUMMARY:
+==14115==     in use at exit: 150 bytes in 8 blocks
+==14115==   total heap usage: 8 allocs, 0 frees, 150 bytes allocated
+==14115== 
+==14115== Searching for pointers to 8 not-freed blocks
+==14115== Checked 68,784 bytes
+==14115== 
+==14115== LEAK SUMMARY:
+==14115==    definitely lost: 0 bytes in 0 blocks
+==14115==    indirectly lost: 0 bytes in 0 blocks
+==14115==      possibly lost: 0 bytes in 0 blocks
+==14115==    still reachable: 150 bytes in 8 blocks
+==14115==         suppressed: 0 bytes in 0 blocks
+==14115== Reachable blocks (those to which a pointer was found) are not shown.
+==14115== To see them, rerun with: --leak-check=full --show-reachable=yes
+==14115== 
+==14115== Use --track-origins=yes to see where uninitialised values come from
+==14115== ERROR SUMMARY: 4194097 errors from 2 contexts (suppressed: 6 from 6)
+==14115== 
+==14115== 70 errors in context 1 of 2:
+==14115== Conditional jump or move depends on uninitialised value(s)
+==14115==    at 0x400A7E: print_directions (answer06.c:75)
+==14115==    by 0x400B77: main (mytest.c:29)
+==14115== 
+==14115== 
+==14115== 4194027 errors in context 2 of 2:
+==14115== Invalid read of size 1
+==14115==    at 0x400A70: print_directions (answer06.c:75)
+==14115==    by 0x400B77: main (mytest.c:29)
+==14115==  Address 0x4c3c0da is 0 bytes after a block of size 10 alloc'd
+==14115==    at 0x4A06A2E: malloc (vg_replace_malloc.c:270)
+==14115==    by 0x400AE8: main (mytest.c:22)
+==14115== 
+--14115-- 
+--14115-- used_suppression:      4 U1004-ARM-_dl_relocate_object
+--14115-- used_suppression:      2 glibc-2.5.x-on-SUSE-10.2-(PPC)-2a
+==14115== 
+==14115== ERROR SUMMARY: 4194097 errors from 2 contexts (suppressed: 6 from 6)
