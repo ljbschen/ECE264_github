@@ -15,13 +15,33 @@ create_node(char * stars, char * name, char * address) {
 
 BusinessNode *
 tree_insert(BusinessNode * node, BusinessNode * root) {
+	//if node is null
+	if (node == NULL) return root;
+	//if node is not null and root is null
+	if (root == NULL && node != NULL) return node;
+	//if node is not null and root is not null
 	//insert left
-	if (strcmp(node->name, root->name) > 0) {
-		
+	if (strcmp(node->name, root->name) <= 0) {
+		if (root->left == NULL) {
+			root->left = node;
+			return root;
+		}
+		else {
+			root = root->left;
+			tree_insert(node, root);
+		}
 	}
-
-	if (root->left == NULL) root->left = node;
-
+	//insert right
+	else {
+		if (root->right == NULL) {
+			root->right = node;
+			return root
+		}
+		else {
+			root = root->right;
+			tree_insert(node, root);
+		}
+	}
 	return root;
 }
 
