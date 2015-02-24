@@ -11,7 +11,7 @@ void destroyStringArray(char * * strArr, int len);
 
 BusinessNode *
 create_node(char * stars, char * name, char * address) {
-	BusinessNode *Bnode = malloc(sizeof (BusinessNode));
+	BusinessNode *Bnode = malloc( sizeof (BusinessNode));
 	Bnode->stars = stars;
 	Bnode->name = name;
 	Bnode->address = address;
@@ -27,6 +27,7 @@ tree_insert(BusinessNode * node, BusinessNode * root) {
 	//if node is not null and root is null
 	if (root == NULL && node != NULL) return node;
 	//if node is not null and root is not null
+	BusinessNode * tmp = root;
 	//insert left
 	if (strcmp(node->name, root->name) <= 0) {
 		if (root->left == NULL) {
@@ -49,43 +50,47 @@ tree_insert(BusinessNode * node, BusinessNode * root) {
 			tree_insert(node, root);
 		}
 	}
-	return root;
+	return tmp;
 }
 
 BusinessNode *
 load_tree_from_file(char * filename) {
 	FILE *fp = NULL;
-	int err = FALSE;
-	char line[300];
+	char line[200];
 	char **strArr;
+
 	BusinessNode * root = NULL;
 	BusinessNode * newnode = NULL;
 	//open file
-	if(!err) {
-		fp = fopen(filename, "rb");
-		if(!fp) {
-	    	fprintf(stderr, "Failed to open file '%s'\n", filename);
-	    	err = TRUE;
-		}
+	fp = fopen(filename, "rb");
+	if(!fp) {
+	   	fprintf(stderr, "Failed to open file '%s'\n", filename);
+	   	return NULL;
 	}
 	//read line by line
-	if (!err) {
-		while (fgets(line, 300, fp) != NULL) {
-			//read all fields and fill into node
-			strArr = explode(line, '\t');
-			newnode = create_node(strArr[0], strArr[1], strArr[2]);
-			//free the ptr
-			destroyStringArray(strArr, 3);
-			//insert node
-			root = tree_insert(newnode, root);
-		}
+	while (fgets(line, 200, fp) != NULL) {
+		//stars, name, address
+		strArr = explode(line, '\t');
+		newnode = create_node(strdup(strArr[0]), strdup(strArr[1]), strdup(strArr[2]));
+		//free the ptr
+		destroyStringArray(strArr, 3);
+		//insert node
+		root = tree_insert(newnode, root);
 	}
+	fclose(fp);
 	return root;
 }
 
 BusinessNode *
 tree_search_name(char * name, BusinessNode * root) {
-	return NULL;
+	if (name == NULL || root == NULL) return NULL;
+	if (strcmp(name, root->name) < 0) {
+		return tree_search_name(name, root->left);
+	}
+	if (strcmp(name, root->name) > 0) {
+		return tree_search_name(name, root->right);
+	}
+	return root;
 }
 
 void
@@ -117,17 +122,12 @@ print_tree(BusinessNode * tree) {
 
 void
 destroy_tree(BusinessNode * root) {
-	BusinessNode * tmp = root;
-	if (tmp != NULL) {
-		if (tmp->left != NULL) {
-			tmp = tmp->left;
-			destroy_tree(tmp);
-		}
-		if (tmp->right != NULL) {
-			tmp = tmp->right;
-			destroy_tree(tmp);
-		}
-	}
+	if (root == NULL) return ;
+	destroy_tree(root->left);
+	destroy_tree(root->right);
+	free(root->name);
+	free(root->stars);
+	free(root->address);
 	free(root);
 }
 
@@ -140,22 +140,21 @@ char * * explode(const char * str, const char delims) {
     else len = strlen(str);
 
     for (i = 0; i < len; i ++) {
-        if (strchr(&delims, str[i]) != NULL) N++;
+        if (delims == str[i]) N++;
     }
     // Create the return array
     char * * strArr = malloc((N + 1) * sizeof(char *));
-
+   	
     //then strcpy into different location
     //create two indicies: last and ind
     //last traces the position of last observed delim and ind traces the current char in str
 
     int last = -1;
-
     //go through all chars in str and if it is a delim :
     //1. create a string for the char from last to ind
     //2. set last to current ind
     for (i = 0; i < len; i++){
-        if (strchr(&delims, str[i]) != NULL) {
+        if (delims == str[i]) {
             *strArr = (char *)malloc(i - last);
             strncpy(*strArr, str + last + 1, i - last - 1);
             (*strArr)[i - last - 1] = '\0';
@@ -163,7 +162,6 @@ char * * explode(const char * str, const char delims) {
             last = i;   
         }
     }
-    
     //add the last string
     *strArr = (char *) malloc (len - last);
     strncpy(*strArr, str + last + 1, len - last -1);
